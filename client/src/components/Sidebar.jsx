@@ -3,9 +3,9 @@ import { LayoutDashboard, FolderKanban, CheckSquare } from 'lucide-react';
 
 const Sidebar = () => {
   const navItems = [
-    { name: 'Dashboard', path: '/', icon: LayoutDashboard },
-    { name: 'Projects', path: '/projects', icon: FolderKanban },
-    { name: 'Tasks', path: '/tasks', icon: CheckSquare },
+    { name: 'Dashboard', path: '/app', icon: LayoutDashboard },
+    { name: 'Projects', path: '/app/projects', icon: FolderKanban },
+    { name: 'Tasks', path: '/app/tasks', icon: CheckSquare },
   ];
 
   return (
