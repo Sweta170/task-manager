@@ -1,80 +1,155 @@
-# Team Task Manager
+# 🗂️ Team Task Manager
 
-A production-ready full-stack web application built with the MERN stack (MongoDB, Express, React, Node.js). This platform provides role-based access control (Admin/Member), project and task management, analytics, and an intuitive, modern UI styled with Tailwind CSS.
+A production-ready full-stack web application built with the **MERN stack** (MongoDB, Express, React, Node.js). Role-based access control, project & task management, and a beautiful modern UI.
 
-## 🌟 Features
+![Tech Stack](https://img.shields.io/badge/Stack-MERN-61DAFB?style=flat-square&logo=react)
+![License](https://img.shields.io/badge/License-ISC-green?style=flat-square)
+![Node](https://img.shields.io/badge/Node.js-18+-339933?style=flat-square&logo=node.js)
 
-- **🔐 Authentication & Authorization:** JWT-based auth with encrypted passwords. Role-Based Access Control (Admin and Member).
-- **📁 Project Management:** Admins can create and delete projects and assign members.
-- **✅ Task Management:** Kanban-style task board. Admins create/edit tasks; Members update status.
-- **⏰ Overdue Detection:** Tasks automatically flagged if deadlines are missed.
-- **📊 Interactive Dashboard:** Visual breakdown of tasks using Recharts.
-- **🔎 Search & Filter:** Filter tasks by project and search by title.
-- **🎨 Premium UI:** Responsive design with modern styling, glassmorphism, and micro-animations.
+---
+
+## ✨ Features
+
+| Feature | Description |
+|---|---|
+| 🔐 **Auth & RBAC** | JWT-based login with Admin / Member roles |
+| 📁 **Projects** | Admins create projects and assign team members |
+| ✅ **Tasks** | Kanban-style board; members update status |
+| ⏰ **Overdue Detection** | Tasks auto-flagged past their deadline |
+| 📊 **Dashboard** | Visual analytics powered by Recharts |
+| 🔎 **Search & Filter** | Filter tasks by project, search by title |
+| 🌙 **Theme Toggle** | Light / dark mode with persistent preference |
+| 🎨 **Premium UI** | Glassmorphism, micro-animations, responsive design |
+
+---
 
 ## 🧱 Tech Stack
 
-- **Frontend:** React (Vite), Tailwind CSS, React Router, Recharts, Axios, React Hot Toast
-- **Backend:** Node.js, Express.js, JWT, bcrypt
-- **Database:** MongoDB (Mongoose)
+**Frontend:** React 19 (Vite), Tailwind CSS v4, React Router v7, Recharts, Axios, React Hot Toast, Lucide Icons
 
-## 🚀 Setup Instructions
+**Backend:** Node.js, Express v5, Mongoose, JWT, bcrypt, express-validator
+
+**Database:** MongoDB
+
+---
+
+## 🚀 Local Development
 
 ### Prerequisites
-- Node.js installed
-- MongoDB URI (local or Atlas)
+- Node.js 18+
+- MongoDB running locally **or** a MongoDB Atlas connection string
 
-### Backend Setup
-1. Navigate to the server folder: `cd server`
-2. Install dependencies: `npm install`
-3. Create a `.env` file in `server/` with the following variables:
-   ```env
-   PORT=5000
-   MONGODB_URI=your_mongodb_connection_string
-   JWT_SECRET=your_jwt_secret
-   ```
-4. Start the server: `npm run dev` (runs on http://localhost:5000)
+### 1. Clone the repo
+```bash
+git clone https://github.com/Sweta170/task-manager.git
+cd task-manager
+```
 
-### Frontend Setup
-1. Navigate to the client folder: `cd client`
-2. Install dependencies: `npm install`
-3. The API base URL is configured to `http://localhost:5000/api`. If your backend runs elsewhere, update `src/services/api.js`.
-4. Start the development server: `npm run dev` (runs on http://localhost:5173)
+### 2. Backend setup
+```bash
+cd server
+npm install
+cp .env.example .env   # then fill in your values
+npm run dev            # starts on http://localhost:5000
+```
+
+**`server/.env` variables:**
+```env
+PORT=5000
+MONGODB_URI=mongodb://127.0.0.1:27017/teamtask
+JWT_SECRET=your_jwt_secret_key_here
+```
+
+### 3. Frontend setup
+```bash
+cd client
+npm install
+npm run dev            # starts on http://localhost:5173
+```
+
+> The Vite dev server proxies `/api` requests to `http://localhost:5000` automatically — no CORS configuration needed.
+
+### 4. Seed the admin user
+```bash
+cd server
+node seed_admin.js
+```
+Default admin credentials: `admin@teamtask.com` / `admin123`
+
+---
+
+## 📜 API Reference
+
+### Auth — `/api/auth`
+| Method | Endpoint | Access | Description |
+|---|---|---|---|
+| POST | `/register` | Public | Register new user |
+| POST | `/login` | Public | Login & receive JWT |
+| GET | `/profile` | Auth | Get own profile |
+| GET | `/users` | Admin | List all users |
+
+### Projects — `/api/projects`
+| Method | Endpoint | Access | Description |
+|---|---|---|---|
+| GET | `/` | Auth | Get projects (filtered by role) |
+| POST | `/` | Admin | Create project |
+| GET | `/:id` | Auth | Get single project |
+| PUT | `/:id` | Admin | Update project |
+| DELETE | `/:id` | Admin | Delete project |
+
+### Tasks — `/api/tasks`
+| Method | Endpoint | Access | Description |
+|---|---|---|---|
+| GET | `/` | Auth | Get all tasks |
+| GET | `/stats/dashboard` | Auth | Dashboard statistics |
+| POST | `/` | Admin | Create task |
+| PUT | `/:id` | Auth | Update task |
+| DELETE | `/:id` | Admin | Delete task |
+
+---
 
 ## 🌐 Deployment (Railway)
 
-1. **Database:** Provision a MongoDB instance on Railway or use MongoDB Atlas.
-2. **Backend:**
-   - Push the code to GitHub.
-   - In Railway, create a new project and select the repository.
-   - Set the Root Directory to `/server`.
-   - Add environment variables: `PORT`, `MONGODB_URI`, `JWT_SECRET`.
-   - Railway will automatically detect Node.js and run `npm start`. Ensure `package.json` has: `"start": "node index.js"`.
-3. **Frontend:**
-   - Add another service in the same Railway project from the repository.
-   - Set the Root Directory to `/client`.
-   - Add environment variable: `VITE_API_URL` pointing to your deployed backend URL.
-   - Change `api.js` to use `import.meta.env.VITE_API_URL`.
-   - Railway will detect the Vite config and run `npm run build`.
+### Backend
+1. Create a new Railway project → connect your GitHub repo
+2. Set **Root Directory** to `/server`
+3. Add environment variables: `PORT`, `MONGODB_URI`, `JWT_SECRET`
+4. Railway auto-detects Node.js and runs `npm start`
 
-## 📜 API Endpoints
+### Frontend
+1. Add another service in the same Railway project
+2. Set **Root Directory** to `/client`
+3. Add env variable: `VITE_API_URL=https://your-backend.railway.app/api`
+4. Railway runs `npm run build` and serves the Vite output
 
-### Auth (`/api/auth`)
-- `POST /register`: Register a new user
-- `POST /login`: Authenticate and get token
-- `GET /profile`: Get user profile
-- `GET /users`: Get all users (Admin)
+---
 
-### Projects (`/api/projects`)
-- `GET /`: Get all projects (Filtered by user)
-- `POST /`: Create project (Admin)
-- `GET /:id`: Get specific project
-- `PUT /:id`: Update project (Admin)
-- `DELETE /:id`: Delete project (Admin)
+## 📂 Project Structure
 
-### Tasks (`/api/tasks`)
-- `GET /`: Get all tasks
-- `GET /stats/dashboard`: Get user task statistics
-- `POST /`: Create task (Admin)
-- `PUT /:id`: Update task
-- `DELETE /:id`: Delete task (Admin)
+```
+task-manager/
+├── client/                 # React frontend (Vite)
+│   ├── src/
+│   │   ├── components/     # Layout, Navbar, Sidebar
+│   │   ├── context/        # AuthContext, ThemeContext
+│   │   ├── pages/          # Dashboard, Login, Projects, Tasks
+│   │   └── services/       # Axios API client
+│   └── .env.example
+├── server/                 # Express backend
+│   ├── controllers/        # authController, projectController, taskController
+│   ├── middleware/         # auth, error, role middleware
+│   ├── models/             # User, Project, Task (Mongoose)
+│   ├── routes/             # authRoutes, projectRoutes, taskRoutes
+│   ├── utils/              # DB connection
+│   ├── seed_admin.js       # Admin seeder script
+│   └── .env.example
+├── .gitignore
+├── Procfile                # Railway / Heroku process definition
+└── README.md
+```
+
+---
+
+## 👩‍💻 Author
+
+**Sweta** — [github.com/Sweta170](https://github.com/Sweta170)

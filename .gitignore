@@ -23,3 +23,8 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+
+# Dev-only server utility scripts
+server/scratch_db.js
+server/test_hash.js
+server/reset_password.js
