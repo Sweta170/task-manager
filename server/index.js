@@ -14,22 +14,10 @@ const app = express();
 // Connect to database
 connectDB();
 
-// CORS — allow localhost in dev, and the deployed frontend URL in production
-const allowedOrigins = [
-  'http://localhost:5173',
-  process.env.CLIENT_URL,
-].filter(Boolean);
-
+// CORS — allow all origins (suitable for student/demo project)
 app.use(cors({
-  origin: (origin, callback) => {
-    // Allow requests with no origin (e.g. Postman, server-to-server)
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error(`CORS: origin ${origin} not allowed`));
-    }
-  },
-  credentials: true,
+  origin: '*',
+  credentials: false,
 }));
 
 app.use(express.json());
